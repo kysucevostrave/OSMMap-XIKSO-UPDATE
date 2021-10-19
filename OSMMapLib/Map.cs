@@ -10,25 +10,26 @@ namespace OSMMapLib
     class Map
     {
 
-        public Layer Layer { get; set; }
+        public Layer Layer { get => layer; set => layer = value;  }
 
-
-
+        private double lat;
+        private double lon;
+        private int zoom;
         public double Lat
         {
-            get { return Lat; }
+            get { return lat; }
             set
             {
-                Lat = ((value - (-90)) / (90 - (-90)));
+                lat = (value + 90.0) % 180 - 90.0;
             }
         }
 
         public double Lon
         {
-            get { return Lon; }
+            get { return lon; }
             set
             {
-                Lon = ((value - (-180)) / (180 - (-180)));
+                 lon = (value + 180.0) % 360 - 180.0;
             }
         }
 
@@ -36,16 +37,18 @@ namespace OSMMapLib
                 var rand = new Random();
                 return rand.Next(1, Layer.MaxZoom);
 
-            } set {
+            } 
+            set {
 
                 if (Layer.MaxZoom < value)
                 {
                     Zoom = Layer.MaxZoom;
 
                 }
-                else
+                
+	           else
                 {
-                    Zoom = value;
+                    zoom = value;
                 }
             } }
 
